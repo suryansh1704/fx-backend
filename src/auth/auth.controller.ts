@@ -1,5 +1,6 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, NotImplementedException, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, NotImplementedException, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { AuthGuard } from './guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -12,6 +13,12 @@ export class AuthController {
     // throw new NotImplementedException('Implement this method');
 
     return this.authService.authenticate(input);
+  }
+
+  @UseGuards(AuthGuard) // means this endpoint protected by AuthGuard - can activate will work
+  @Get('me') // to allow only authenticated users to access this route
+  getUserInfo(@Request() request){  // request object updated in auth guard
+    return request.user;
   }
 
 }
