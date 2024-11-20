@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 export type User = {
-    username: string;
+    // username: string;
     email: string;
     password: string;
     userId: number;
@@ -10,13 +10,13 @@ export type User = {
 // FIXME: implement actual db 
 const users: User[]=[
     {
-        username: 'john',
+        // username: 'john',
         email: 'john@gmail.com',
         password: 'changeme',
         userId: 1
     },
     {
-        username: 'chris',
+        // username: 'chris',
         email: 'chris@gmail.com',
         password: 'secret',
         userId: 2
@@ -25,9 +25,9 @@ const users: User[]=[
 
 @Injectable()
 export class UsersService {
-    async findUserByUsername(username: string): Promise<User | undefined> {
+    async findUserByUsername(email: string): Promise<User | undefined> {
         // FIXME:prisma query
-        return users.find(user=>user.username===username);
+        return users.find(user=>user.email===email);
         
     }
 }

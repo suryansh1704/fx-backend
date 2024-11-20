@@ -1,0 +1,8 @@
+# ctrl + alt + r to run
+POST http://localhost:3000/auth/login
+content-type: application/json
+
+{
+  "email": "john@gmail.com",
+  "password": "changeme"
+}
