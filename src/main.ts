@@ -9,10 +9,18 @@ async function bootstrap() {
     .setTitle('FX Main Backend')
     .setDescription('This is a api docs for FX Backend')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
+
+  // Cors
+  // if (corsConfig?.enabled) {
+  //   app.enableCors({
+  //     origin: true,
+  //   });
+  // }
 
   await app.listen(3000);
 }
