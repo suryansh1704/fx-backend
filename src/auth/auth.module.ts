@@ -5,9 +5,10 @@ import { UsersModule } from 'src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JWT_SECRET } from 'src/configs/jwt-secret';
 import { AuthRepository } from './v1/auth.repository';
+import { PrismaService } from 'src/prisma/v1/prisma.service';
 
 @Module({
-  providers: [AuthService , AuthRepository],
+  providers: [AuthService , AuthRepository , PrismaService],
   controllers: [AuthController],
   imports:[
     UsersModule,

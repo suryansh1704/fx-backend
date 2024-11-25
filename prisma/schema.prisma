@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+model UserAuth {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+  user     User?
+}
+
+model User {
+  id             String           @id @default(uuid())
+  name           String
+  UserAuth       UserAuth         @relation(fields: [AuthId], references: [id])
+  AuthId         String           @unique
+  UserPreference UserPreference[]
+  UserAttributes UserAttributes?
+}
+
+enum Size {
+  XS
+  S
+  M
+  L
+  XL
+  XXL
+}
+
+model UserAttributes {
+  id      String @id @default(uuid())
+  user    User   @relation(fields: [UserId], references: [id])
+  UserId  String @unique
+  height  Float
+  weight  Float
+  age     Int
+  SizeTop Size
+}
+
+enum PreferenceType {
+  Casual
+  Formal
+  Funky
+  Sporty
+  Traditional
+  Streetwear
+}
+
+enum Color {
+  Red
+  Blue
+  Green
+  Yellow
+  Orange
+  Purple
+  Pink
+  Brown
+  Black
+  White
+  Grey
+}
+
+model UserPreference {
+  id            String         @id @default(uuid())
+  user          User           @relation(fields: [UserId], references: [id])
+  UserId        String
+  type          PreferenceType @default(Casual)
+  preferedColor Color[]        @default([])
+}
+
+enum crdb_internal_region {
+  aws_ap_southeast_1 @map("aws-ap-southeast-1")
+}
