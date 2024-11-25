@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, NotImplementedException, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '../guards/auth.guard';
-import { ApiBasicAuth, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiBearerAuth, ApiBody, ApiOkResponse } from '@nestjs/swagger';
 import { AuthDto } from '../dto/Auth.dto';
 import { SignupDto } from '../dto/Signup.dto';
 
@@ -26,6 +26,8 @@ export class AuthController {
   }
 
   @ApiBody({type: SignupDto})
+  @ApiOkResponse({description: 'User signed up successfully'})
+  @HttpCode(HttpStatus.OK)
   @Post('signup')
   async signup(@Body() input: SignupDto){
     return this.authService.signup(input);
