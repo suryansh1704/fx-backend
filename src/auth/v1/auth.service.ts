@@ -1,3 +1,4 @@
+// FIXME: Access Token Fix karna hai
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
@@ -7,7 +8,7 @@ import { AuthDto } from '../dto/Auth.dto';
 
 type AuthData = { authId: string; email: string };
 type AuthResult = { accessToken: any; userId: string; email: string };
-type SignUpResult = { accessToke: string; userId: string; email: string };
+type SignUpResult = { accessToken: any; userId: string; email: string };
 
 @Injectable()
 export class AuthService {
@@ -33,9 +34,9 @@ export class AuthService {
   async authenticate(input: AuthDto): Promise<AuthResult | undefined> {
     const userAuth = await this.validateUser(input);
 
-    const token = this.GenerateToken(userAuth);
-
     const userId = await this.userService.findUserIdByAuth(userAuth.authId);
+    
+    const token = this.GenerateToken({userId:userId.userId , email:input.email });
 
     return {
       accessToken: token,
@@ -44,17 +45,20 @@ export class AuthService {
     };
   }
 
-  async GenerateToken(user: AuthData): Promise<{ accessToken: string }> {
-    const tokenPayload = { sub: user.authId, email: user.email }; // here sub is important according to jwt convention
+  async GenerateToken(user:{ userId:string , email:string }): Promise<{ accessToken: string }> {
+    const tokenPayload = { sub: user.userId, email: user.email }; // here sub is important according to jwt convention
     const accessToken = await this.jwtService.signAsync(tokenPayload);
-
     return { accessToken };
   }
 
   async signup(input: SignupDto): Promise<SignUpResult | undefined> {
     // create a new user and than generate access token
     const user = await this.authRepository.createUser(input);
-
-    return;
+  
+    return {
+      accessToken:'fake-token',
+      userId: user.userId,
+      email: user.email
+    }
   }
 }
