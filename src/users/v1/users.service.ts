@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/v1/prisma.service';
 import { UsersRepository } from './users.repository';
 import { AttributesDto } from '../dto/attributes.dto';
+import { PreferencesDto } from '../dto/preferences.dto';
 
 export type User = {
     // username: string;
@@ -21,7 +22,11 @@ export class UsersService {
         return user;
     }
 
-    async createUserAttributes(input: AttributesDto){
-        return this.userRepository.createUserAttributes(input);
+    async AddUserAttributes(input: AttributesDto){
+        return this.userRepository.AddUserAttributes(input);
+    }
+    
+    async AddUserPreferences(input: PreferencesDto){
+        return this.userRepository.AddUserPreferences(input);
     }
 }

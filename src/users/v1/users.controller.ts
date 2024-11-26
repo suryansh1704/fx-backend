@@ -2,17 +2,25 @@ import { Body, Controller, Post } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { ApiAcceptedResponse, ApiBody } from "@nestjs/swagger";
 import { AttributesDto } from "../dto/attributes.dto";
+import { PreferencesDto } from "../dto/preferences.dto";
 
 @Controller('users')
 export class UsersController{
     constructor(private userService:UsersService){}
 
     @ApiBody({type:AttributesDto})
-    @ApiAcceptedResponse({description:'User attributes created'})
+    @ApiAcceptedResponse({description:'User attributes Added'})
     @Post('attributes')
-    async CreateUserAttributes(@Body() input:AttributesDto){
+    async AddUserAttributes(@Body() input:AttributesDto){
         console.log('input',input);
-        return this.userService.createUserAttributes(input);
+        return this.userService.AddUserAttributes(input);
+    }
+    
+    @ApiBody({type:PreferencesDto})
+    @ApiAcceptedResponse({description:'User Preference Added'})
+    @Post('preferences')
+    async AddUserPreferences(@Body() input:PreferencesDto){
+        return this.userService.AddUserPreferences(input);
     }
 
 }
