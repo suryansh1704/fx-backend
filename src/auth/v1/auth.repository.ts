@@ -8,6 +8,24 @@ type SignupResult = { userId: string; email: string; token: string; };
 export class AuthRepository{
     constructor(private prismaService:PrismaService) {}
 
+    async findUserAuthByEmail(email: string) : Promise<{authId:string, email:string , password:string}|undefined> {
+        const userAuth = await this.prismaService.userAuth.findFirst({
+            where:{
+                email: email
+            }
+        })
+
+        if(!userAuth){
+            throw new BadRequestException('User not found');
+        }
+
+        return {
+            authId: userAuth.id,
+            email: userAuth.email,
+            password: userAuth.password
+        }
+    }
+
     async createUser(input: SignupDto): Promise<SignupResult|undefined> {
 
         const userExists = await this.prismaService.userAuth.findFirst({
@@ -31,7 +49,7 @@ export class AuthRepository{
         const userData = await this.prismaService.user.create({
             data:{
                 name:input.name,
-                AuthId: userAuthData.id
+                authId: userAuthData.id
             }
         })
 

@@ -12,6 +12,7 @@ export class AuthController {
 
   @ApiBody({type: AuthDto})
   @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({description: 'User Login successfully'})
   @Post('login')
   async login(@Body() input: AuthDto){
     // throw new NotImplementedException('Implement this method');
