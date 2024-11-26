@@ -49,7 +49,7 @@ export class AuthRepository{
         const userData = await this.prismaService.user.create({
             data:{
                 name:input.name,
-                AuthId: userAuthData.id
+                authId: userAuthData.id
             }
         })
 

@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,18 +17,37 @@ model UserAuth {
   id        String   @id @default(uuid())
   email     String   @unique
   password  String
-  user      User?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user      User?
 }
 
 model User {
   id             String           @id @default(uuid())
+  authId         String           @unique
   name           String
-  UserAuth       UserAuth         @relation(fields: [AuthId], references: [id])
-  AuthId         String           @unique
-  UserPreference UserPreference[]
-  UserAttributes UserAttributes?
+  userAuth       UserAuth         @relation(fields: [authId], references: [id])
+  userAttributes UserAttributes?
+  userPreference UserPreference[]
+}
+
+model UserAttributes {
+  id         String @id @default(uuid())
+  userId     String @unique
+  height     Float
+  weight     Float
+  age        Int
+  sizeTop    Size
+  sizeBottom Size
+  user       User   @relation(fields: [userId], references: [id])
+}
+
+model UserPreference {
+  id            String         @id @default(uuid())
+  userId        String
+  type          PreferenceType @default(Casual)
+  preferedColor Color[]        @default([])
+  user          User           @relation(fields: [userId], references: [id])
 }
 
 enum Size {
@@ -32,16 +57,6 @@ enum Size {
   L
   XL
   XXL
-}
-
-model UserAttributes {
-  id      String @id @default(uuid())
-  user    User   @relation(fields: [UserId], references: [id])
-  UserId  String @unique
-  height  Float
-  weight  Float
-  age     Int
-  SizeTop Size
 }
 
 enum PreferenceType {
@@ -67,14 +82,6 @@ enum Color {
   Grey
 }
 
-model UserPreference {
-  id            String         @id @default(uuid())
-  user          User           @relation(fields: [UserId], references: [id])
-  UserId        String
-  type          PreferenceType @default(Casual)
-  preferedColor Color[]        @default([])
-}
-
 enum crdb_internal_region {
-  aws_ap_southeast_1 @map("aws-ap-southeast-1")
+  aws_ap_south_1 @map("aws-ap-south-1")
 }

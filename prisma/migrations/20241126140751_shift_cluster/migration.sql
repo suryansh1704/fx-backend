@@ -12,6 +12,8 @@ CREATE TABLE "UserAuth" (
     "id" STRING NOT NULL,
     "email" STRING NOT NULL,
     "password" STRING NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "UserAuth_pkey" PRIMARY KEY ("id")
 );
@@ -19,8 +21,8 @@ CREATE TABLE "UserAuth" (
 -- CreateTable
 CREATE TABLE "User" (
     "id" STRING NOT NULL,
-    "email" STRING NOT NULL,
-    "AuthId" STRING NOT NULL,
+    "authId" STRING NOT NULL,
+    "name" STRING NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -28,11 +30,12 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "UserAttributes" (
     "id" STRING NOT NULL,
-    "UserId" STRING NOT NULL,
+    "userId" STRING NOT NULL,
     "height" FLOAT8 NOT NULL,
     "weight" FLOAT8 NOT NULL,
     "age" INT4 NOT NULL,
-    "SizeTop" "Size" NOT NULL,
+    "sizeTop" "Size" NOT NULL,
+    "sizeBottom" "Size" NOT NULL,
 
     CONSTRAINT "UserAttributes_pkey" PRIMARY KEY ("id")
 );
@@ -40,7 +43,7 @@ CREATE TABLE "UserAttributes" (
 -- CreateTable
 CREATE TABLE "UserPreference" (
     "id" STRING NOT NULL,
-    "UserId" STRING NOT NULL,
+    "userId" STRING NOT NULL,
     "type" "PreferenceType" NOT NULL DEFAULT 'Casual',
     "preferedColor" "Color"[] DEFAULT ARRAY[]::"Color"[],
 
@@ -51,19 +54,16 @@ CREATE TABLE "UserPreference" (
 CREATE UNIQUE INDEX "UserAuth_email_key" ON "UserAuth"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "User_authId_key" ON "User"("authId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_AuthId_key" ON "User"("AuthId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "UserAttributes_UserId_key" ON "UserAttributes"("UserId");
+CREATE UNIQUE INDEX "UserAttributes_userId_key" ON "UserAttributes"("userId");
 
 -- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_AuthId_fkey" FOREIGN KEY ("AuthId") REFERENCES "UserAuth"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_authId_fkey" FOREIGN KEY ("authId") REFERENCES "UserAuth"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserAttributes" ADD CONSTRAINT "UserAttributes_UserId_fkey" FOREIGN KEY ("UserId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserAttributes" ADD CONSTRAINT "UserAttributes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserPreference" ADD CONSTRAINT "UserPreference_UserId_fkey" FOREIGN KEY ("UserId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserPreference" ADD CONSTRAINT "UserPreference_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
