@@ -1,10 +1,10 @@
 // FIXME: Access Token Fix karna hai
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/users.service';
 import { SignupDto } from '../dto/signup.dto';
 import { AuthRepository } from './auth.repository';
 import { AuthDto } from '../dto/Auth.dto';
+import { UsersService } from 'src/users/v1/users.service';
 
 type AuthData = { authId: string; email: string };
 type AuthResult = { accessToken: any; userId: string; email: string };
