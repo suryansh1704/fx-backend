@@ -9,6 +9,7 @@ content-type: application/json
   "password": "changeme"
 }
 
-### access-control
+### access-control 
+#any change put new bearer token to refresh
 GET http://localhost:3000/auth/me
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiam9obkBnbWFpbC5jb20iLCJpYXQiOjE3MzIxMzA4OTIsImV4cCI6MTczMjIxNzI5Mn0.eODtjaJ9dYDWV8OCf4HCv20biQD0e0HKTkUP8VMyC7s

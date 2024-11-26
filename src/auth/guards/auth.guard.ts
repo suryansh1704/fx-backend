@@ -1,3 +1,4 @@
+// makesure's Bearer <tokenisvalidornot> and add's user details in request global object  // this user details are extracted from bearer token // maybe role of sub ata hoga ## decoding/decryption 
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
